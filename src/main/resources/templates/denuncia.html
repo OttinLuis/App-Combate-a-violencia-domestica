@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denunciar Caso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #EDE9F3; /* Lilás claro */
+            min-height: 100vh;
+        }
+
+        /* Topbar fixa e completa */
+        .topbar {
+            width: 100%;
+            background: #fafafa;
+            border-bottom: 1.2px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 60px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .topbar-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 12px;
+            font-size: 1em;
+            color: #232023;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        .topbar-link:hover {
+            color: #e74c3c;
+        }
+        .topbar-link i {
+            font-size: 24px;
+            color: #e74c3c;
+        }
+        .topbar-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #e74c3c 0%, #ff6b6b 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+        }
+        .topbar-icon i {
+            font-size: 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px 60px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .header-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ffe5e5 0%, #ffd5d5 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(231, 76, 60, 0.15);
+        }
+        .header-logo i {
+            font-size: 40px;
+            color: #e74c3c;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        .header p {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 28px 26px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 18px;
+        }
+        .info-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Campo de upload de imagem */
+        .photo-upload-wrapper {
+            margin-bottom: 16px;
+        }
+        .photo-upload {
+            width: 120px;
+            height: 120px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #ddd;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .photo-upload:hover {
+            border-color: #e74c3c;
+            background: #fef5f5;
+        }
+        .photo-upload i {
+            font-size: 2.5rem;
+            color: #999;
+            margin-bottom: 8px;
+        }
+        .photo-upload span {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 600;
+        }
+        .photo-upload input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .photo-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            object-fit: cover;
+            display: none;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            font-size: 15px;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            background: #fafafa;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #e74c3c;
+            background: white;
+        }
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .input-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px;
+        }
+        .input-row input {
+            margin-bottom: 0;
+        }
+        .submit-btn {
+            width: 100%;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .submit-btn:hover {
+            background: #d43f2f;
+        }
+        .note {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #666;
+            margin-top: 28px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 90%;
+            }
+            .topbar {
+                padding: 0 16px;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .header-logo {
+                width: 60px;
+                height: 60px;
+            }
+            .header-logo i {
+                font-size: 30px;
+            }
+            .input-row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .input-row input {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Topbar completa e fixa -->
+<div class="topbar">
+    <div class="topbar-left">
+        <a th:href="@{/usuarios/home}" class="topbar-link">
+            <i class="bi bi-arrow-left-circle"></i>
+            <span>Denunciar Caso</span>
+        </a>
+    </div>
+    <div class="topbar-icon">
+        <i class="bi bi-journal-text"></i>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div class="header-logo">
+            <i class="bi bi-journal-text"></i>
+        </div>
+        <h1>Denunciar Caso</h1>
+        <p>Registre o incidente de forma segura e anônima.</p>
+    </div>
+
+    <form th:action="@{/denuncia/salvar}" method="post" th:object="${denuncia}" enctype="multipart/form-data">
+
+        <!-- Foto/Evidência -->
+        <div class="section">
+            <div class="section-title">Evidência (opcional)</div>
+            <label class="info-label">Adicionar foto ou documento:</label>
+            <div class="photo-upload-wrapper">
+                <div class="photo-upload" id="photoUpload">
+                    <i class="bi bi-camera"></i>
+                    <span>Adicionar foto</span>
+                    <input type="file" id="photoInput" name="foto" accept="image/*" onchange="previewPhoto(event)">
+                </div>
+                <img id="photoPreview" class="photo-preview" alt="Preview">
+            </div>
+        </div>
+
+        <!-- Relato -->
+        <div class="section">
+            <div class="section-title">Relato</div>
+            <label class="info-label" for="relato">Descreva o ocorrido:</label>
+            <textarea th:field="*{relato}" id="relato" placeholder="Descreva detalhadamente o que aconteceu..."></textarea>
+        </div>
+
+        <!-- Endereço do incidente -->
+        <div class="section">
+            <div class="section-title">Endereço do incidente</div>
+
+            <label class="info-label" for="cep">CEP</label>
+            <input th:field="*{cep}" id="cep" placeholder="00000-000" type="text">
+
+            <div class="input-row">
+                <div>
+                    <label class="info-label" for="rua">Rua</label>
+                    <input th:field="*{rua}" id="rua" placeholder="Rua" type="text">
+                </div>
+                <div>
+                    <label class="info-label" for="numero">Número</label>
+                    <input th:field="*{numero}" id="numero" placeholder="Nº" type="text">
+                </div>
+            </div>
+
+            <div class="input-row" style="margin-top:16px;">
+                <div>
+                    <label class="info-label" for="cidade">Cidade</label>
+                    <input th:field="*{municipio}" id="cidade" placeholder="Cidade" type="text">
+                </div>
+                <div>
+                    <label class="info-label" for="estado">Estado</label>
+                    <input th:field="*{estado}" id="estado" placeholder="UF" type="text">
+                </div>
+            </div>
+
+            <label class="info-label" for="bairro" style="margin-top:16px;">Bairro</label>
+            <input th:field="*{bairro}" id="bairro" placeholder="Bairro" type="text">
+        </div>
+
+        <!-- Botão de envio -->
+        <div class="section">
+            <div class="section-title">Enviar denúncia</div>
+            <button class="submit-btn" type="submit">
+                <i class="bi bi-send"></i> Enviar denúncia
+            </button>
+        </div>
+    </form>
+
+    <div class="note">
+        Sua denúncia será tratada com sigilo e encaminhada às autoridades competentes.
+    </div>
+</div>
+
+<script>
+    // Preview da foto
+    function previewPhoto(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('photoPreview');
+                const upload = document.getElementById('photoUpload');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                upload.style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Máscara de CEP
+    const cepInput = document.getElementById("cep");
+    cepInput.addEventListener("input", () => {
+        cepInput.value = cepInput.value
+            .replace(/\D/g, "")
+            .replace(/(\d{5})(\d)/, "$1-$2")
+            .substring(0, 9);
+    });
+
+    // Busca automática de endereço via ViaCEP
+    cepInput.addEventListener("blur", () => {
+        let cep = cepInput.value.replace(/\D/g, "");
+        if (cep.length !== 8) return;
+
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.erro) return;
+                document.getElementById("rua").value = data.logradouro || "";
+                document.getElementById("cidade").value = data.localidade || "";
+                document.getElementById("estado").value = data.uf || "";
+            })
+            .catch(() => console.log("Erro ao consultar CEP"));
+    });
+</script>
+</body>
+</html>

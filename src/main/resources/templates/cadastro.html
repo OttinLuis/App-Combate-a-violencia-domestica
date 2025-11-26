@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crie sua conta</title>
+    <style>
+        /* ======== ESTILO GERAL ======== */
+        body {
+            font-family: "Inter", Arial, Helvetica, sans-serif;
+            background-color: #EDE9F3; /* Lilás claro */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* ======== CONTAINER ======== */
+        .container {
+            background-color: #ffffff;
+            width: 400px;
+            padding: 35px 40px;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin: 40px 0;
+        }
+
+        /* ======== TÍTULO ======== */
+        h2 {
+            text-align: center;
+            color: #5D4E8E; /* Lilás escuro */
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        h3 {
+            color: #5D4E8E;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        h4 {
+            text-align: center;
+            color: #5D4E8E; /* Lilás escuro */
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        /* ======== LABELS E INPUTS ======== */
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #5A5A5A;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 5px;
+            border: 1px solid #C9C6D1;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background-color: #FAF9FB;
+            transition: all 0.2s ease-in-out;
+        }
+
+        input:focus {
+            border-color: #A28AD6;
+            background-color: #fff;
+            outline: none;
+            box-shadow: 0 0 4px rgba(162, 138, 214, 0.3);
+        }
+
+        /* ======== BOTÃO ======== */
+        button {
+            width: 100%;
+            background-color: #A9C9A4; /* Verde suave */
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-top: 25px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #9ABF94;
+            transform: scale(1.02);
+        }
+
+        /* ======== LINKS ======== */
+        p {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        a {
+            color: #6B5DA4;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* ======== RESPONSIVO ======== */
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Crie sua conta</h2>
+    <form th:action="@{/usuarios/salvar}" th:object="${usuario}" method="post">
+        <label>CPF:</label>
+        <input type="text" th:field="*{cpf}" placeholder="xxx.xxx.xxx-xx" required>
+
+        <label>Nome:</label>
+        <input type="text" th:field="*{nome}" required>
+
+        <label>RG:</label>
+        <input type="text" th:field="*{rg}">
+
+        <label>E-mail:</label>
+        <input type="email" th:field="*{email}" required>
+
+        <label>Senha:</label>
+        <input type="password" th:field="*{senha}" required>
+
+        <label>Data de nascimento:</label>
+        <input type="text" th:field="*{dataNascimento}" placeholder="dd/mm/aaaa">
+
+        <h3>Endereço</h3>
+        <label>CEP:</label>
+        <input type="text" id="cep" th:field="*{cep}" placeholder="xxxxx-xxx" maxlength="9" required>
+
+        <label>Número da casa:</label>
+        <input type="text" th:field="*{numero}">
+
+        <label>Bairro:</label>
+        <input type="text" id="bairro" th:field="*{bairro}">
+
+        <label>Rua:</label>
+        <input type="text" id="rua" th:field="*{rua}">
+
+        <label>Município:</label>
+        <input type="text" id="municipio" th:field="*{municipio}">
+
+        <label>Estado:</label>
+        <input type="text" id="estado" th:field="*{estado}">
+
+        <label>Complemento:</label>
+        <input type="text" th:field="*{complemento}">
+
+        <h3>Contato</h3>
+        <label>Contato:</label>
+        <input type="text" th:field="*{contato}" placeholder="(xx)xxxxx-xxxx">
+        <label>Contato de confiança:</label>
+        <input type="text" th:field="*{contatoConfianca}" placeholder="(xx)xxxxx-xxxx">
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <p><a th:href="@{/usuarios/login}">Voltar ao login</a></p>
+</div>
+
+<!-- ======== SCRIPT VIACEP ======== -->
+<script>
+    document.getElementById("cep").addEventListener("blur", function() {
+        let cep = this.value.replace(/\D/g, '');
+
+        if (cep.length !== 8) {
+            alert("CEP inválido.");
+            return;
+        }
+
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.erro) {
+                    alert("CEP não encontrado.");
+                    return;
+                }
+
+                document.getElementById("rua").value = data.logradouro;
+                document.getElementById("bairro").value = data.bairro;
+                document.getElementById("municipio").value = data.localidade;
+                document.getElementById("estado").value = data.uf;
+            })
+            .catch(() => alert("Erro ao buscar CEP."));
+    });
+</script>
+
+</body>
+</html>

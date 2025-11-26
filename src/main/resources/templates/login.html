@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        /* ======== ESTILO GERAL ======== */
+        body {
+            font-family: "Inter", Arial, Helvetica, sans-serif;
+            background-color: #EDE9F3; /* Lilás claro */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* ======== CONTAINER ======== */
+        .container {
+            background-color: #ffffff;
+            width: 350px;
+            padding: 35px 40px;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        /* ======== TÍTULO ======== */
+        h2 {
+            text-align: center;
+            color: #5D4E8E;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* ======== LABELS E INPUTS ======== */
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #5A5A5A;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 5px;
+            border: 1px solid #C9C6D1;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background-color: #FAF9FB;
+            transition: all 0.2s ease-in-out;
+        }
+
+        input:focus {
+            border-color: #A28AD6;
+            background-color: #fff;
+            outline: none;
+            box-shadow: 0 0 4px rgba(162, 138, 214, 0.3);
+        }
+
+        /* ======== BOTÃO ======== */
+        button {
+            width: 100%;
+            background-color: #A9C9A4; /* Verde suave */
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #9ABF94;
+            transform: scale(1.02);
+        }
+
+        /* ======== MENSAGENS ======== */
+        .mensagem {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .mensagem.sucesso {
+            color: #4CAF50;
+        }
+
+        .mensagem.erro {
+            color: #E74C3C;
+        }
+
+        /* ======== LINK ======== */
+        p {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        a {
+            color: #6B5DA4;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* ======== RESPONSIVO ======== */
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Entrar na sua conta</h2>
+
+    <div th:if="${param.error}" class="mensagem erro">
+        Email ou senha inválidos.
+    </div>
+
+    <div th:if="${param.logout}" class="mensagem sucesso">
+        Logout realizado com sucesso.
+    </div>
+
+    <form th:action="@{/usuarios/login}" method="post">
+        <label for="username">E-mail:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Entrar</button>
+    </form>
+
+    <p>Não tem conta?
+        <a th:href="@{/usuarios/cadastro}">Cadastre-se aqui</a>
+    </p>
+</div>
+
+</body>
+</html>
