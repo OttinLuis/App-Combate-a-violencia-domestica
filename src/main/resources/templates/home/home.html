@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Mãos Amigas - Home</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #EDE9F3;
+            min-height: 100vh;
+            position: relative;
+            padding-top: 20px;
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #e74c3c 0%, #ff6b6b 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(231, 76, 60, 0.25);
+            z-index: 1000;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(231, 76, 60, 0.35);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+        }
+
+        .logo-container {
+            text-align: center;
+            padding: 20px 0 30px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .logo-container img {
+            max-width: 220px;
+            height: auto;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 20px 35px;
+            animation: fadeIn 1s ease 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .date {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: #666;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .date i {
+            color: #A153D2;
+        }
+
+        .alert-box {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+            border: 2px solid #ffcccc;
+            border-radius: 16px;
+            padding: 20px 25px;
+            max-width: 650px;
+            margin: 0 auto 45px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 16px rgba(231, 76, 60, 0.12);
+            animation: slideInUp 0.6s ease 0.3s both;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            font-size: 24px;
+            color: #e74c3c;
+        }
+
+        .alert-text strong {
+            color: #c0392b;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .alert-text span {
+            color: #7f1d1d;
+            font-size: 14px;
+        }
+
+        .alert-box button {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(192, 57, 43, 0.3);
+        }
+
+        .alert-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(192, 57, 43, 0.4);
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.4s; }
+        .card:nth-child(2) { animation-delay: 0.5s; }
+        .card:nth-child(3) { animation-delay: 0.6s; }
+        .card:nth-child(4) { animation-delay: 0.7s; }
+        .card:nth-child(5) { animation-delay: 0.8s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--card-color), var(--card-color-light));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card-icon i {
+            font-size: 36px;
+            color: var(--card-color);
+        }
+
+        .card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .card.red {
+            --card-color: #e74c3c;
+            --card-color-light: #ff6b6b;
+            --card-bg: linear-gradient(135deg, #ffe5e5 0%, #ffd5d5 100%);
+        }
+
+        .card.purple {
+            --card-color: #A153D2;
+            --card-color-light: #c084fc;
+            --card-bg: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+        }
+
+        .card.blue {
+            --card-color: #3498db;
+            --card-color-light: #5dade2;
+            --card-bg: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        }
+
+        .card.green {
+            --card-color: #27ae60;
+            --card-color-light: #2ecc71;
+            --card-bg: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        }
+
+        .card.dark {
+            --card-color: #5D4E8E;
+            --card-color-light: #8b7bb8;
+            --card-bg: linear-gradient(135deg, #ece8f8 0%, #dcd3f7 100%);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 25px 20px;
+            font-size: 15px;
+            color: #666;
+            animation: fadeIn 1.2s ease;
+        }
+
+        footer .icon {
+            font-size: 18px;
+            vertical-align: middle;
+        }
+
+        footer span {
+            color: #A153D2;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .logout-btn {
+                top: 15px;
+                right: 15px;
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .logo-container img {
+                max-width: 180px;
+            }
+
+            .alert-box {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .card {
+                padding: 24px 16px;
+            }
+
+            .card-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .card-icon i {
+                font-size: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<a th:href="@{/usuarios/logout}" class="logout-btn">
+    <i class="bi bi-box-arrow-right"></i> Sair
+</a>
+
+<div class="container">
+    <div class="logo-container">
+        <img src="/images/logo.png" th:src="@{/images/logo.png}" alt="Logo Mãos Amigas">
+    </div>
+
+    <header class="header">
+        <h1>Bem-vindo ao Mãos Amigas</h1>
+        <p>Um espaço seguro com recursos e apoio para você.</p>
+        <div class="date">
+            <i class="bi bi-clock"></i>
+            <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy • HH:mm')}"></span>
+        </div>
+    </header>
+
+    <div class="alert-box">
+        <div class="alert-content">
+            <i class="bi bi-exclamation-triangle-fill alert-icon"></i>
+            <div class="alert-text">
+                <strong>Em perigo?</strong>
+                <span>Ligue 190 para ajuda imediata</span>
+            </div>
+        </div>
+        <button onclick="window.location.href='tel:190'">
+            <i class="bi bi-telephone-fill"></i> Ligar 190
+        </button>
+    </div>
+
+    <section class="cards-container">
+        <a th:href="@{/suporte/psicologico}" class="card red">
+            <div class="card-icon">
+                <i class="bi bi-heart-pulse-fill"></i>
+            </div>
+            <h3>Ajuda Psicológica</h3>
+            <p>Apoio emocional com profissionais especializados</p>
+        </a>
+
+        <a th:href="@{/denunciar}" class="card purple">
+            <div class="card-icon">
+                <i class="bi bi-journal-text"></i>
+            </div>
+            <h3>Denunciar Caso</h3>
+            <p>Registre o incidente de forma segura</p>
+        </a>
+
+        <a th:href="@{/rede-apoio}" class="card blue">
+            <div class="card-icon">
+                <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <h3>Rede de Apoio</h3>
+            <p>ONGs e centros de apoio próximos</p>
+        </a>
+
+        <a th:href="@{/recursos}" class="card green">
+            <div class="card-icon">
+                <i class="bi bi-book-fill"></i>
+            </div>
+            <h3>Recursos e Leis</h3>
+            <p>Conheça seus direitos e orientações</p>
+        </a>
+
+        <a th:href="@{/admin/dashboard}" class="card dark">
+            <div class="card-icon">
+                <i class="bi bi-speedometer2"></i>
+            </div>
+            <h3>Painel Administrativo</h3>
+            <p>Acompanhe usuários, denúncias e dados gerais do sistema</p>
+        </a>
+    </section>
+
+    <footer>
+        <span class="icon"></span> <span>Lembre-se:</span> você merece viver em paz e segurança.
+    </footer>
+</div>
+
+</body>
+</html>

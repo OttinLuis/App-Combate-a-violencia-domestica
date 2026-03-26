@@ -16,6 +16,6 @@ public class RedeDeApoioController {
     @GetMapping("/rede-apoio")
     public String listar(Model model) {
         model.addAttribute("ongs", repository.findAll());
-        return "rede-apoio";
+        return "rede/rede-apoio";
     }
 }

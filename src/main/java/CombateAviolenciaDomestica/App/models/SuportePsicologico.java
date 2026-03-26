@@ -28,21 +28,6 @@ public class SuportePsicologico {
     @Column(name = "contato_ong", length = 15)
     private String contatoOng;
 
-    public SuportePsicologico() {}
-
-    public SuportePsicologico(String nomePsicologa, String contatoPsicologa, String emailPsicologa, String nomeOng, String ruaOng, String contatoOng) {
-        this.nomePsicologa = nomePsicologa;
-        this.contatoPsicologa = contatoPsicologa;
-        this.emailPsicologa = emailPsicologa;
-        this.nomeOng = nomeOng;
-        this.ruaOng = ruaOng;
-        this.contatoOng = contatoOng;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
     public String getNomePsicologa() {
         return nomePsicologa;
     }

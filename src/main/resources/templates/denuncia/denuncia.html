@@ -14,7 +14,7 @@
         }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #EDE9F3; /* Lilás claro */
+            background-color: #EDE9F3;
             min-height: 100vh;
         }
 
@@ -129,13 +129,19 @@
             display: block;
         }
 
-        /* Campo de upload de imagem */
-        .photo-upload-wrapper {
+        /* Campo de upload de múltiplas imagens */
+        .photo-upload-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
             margin-bottom: 16px;
         }
+        .photo-upload-wrapper {
+            position: relative;
+        }
         .photo-upload {
-            width: 120px;
-            height: 120px;
+            width: 100%;
+            aspect-ratio: 1;
             background: #f5f5f5;
             border-radius: 12px;
             display: flex;
@@ -153,14 +159,15 @@
             background: #fef5f5;
         }
         .photo-upload i {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: #999;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .photo-upload span {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #666;
             font-weight: 600;
+            text-align: center;
         }
         .photo-upload input[type="file"] {
             position: absolute;
@@ -170,11 +177,37 @@
             cursor: pointer;
         }
         .photo-preview {
-            width: 120px;
-            height: 120px;
+            width: 100%;
+            aspect-ratio: 1;
             border-radius: 12px;
             object-fit: cover;
             display: none;
+        }
+        .remove-photo {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 10;
+            transition: background 0.2s;
+        }
+        .remove-photo:hover {
+            background: #d43f2f;
+        }
+        .photo-count {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 8px;
         }
 
         input, textarea {
@@ -257,6 +290,10 @@
             .input-row input {
                 margin-bottom: 0;
             }
+            .photo-upload-container {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
         }
     </style>
 </head>
@@ -286,18 +323,52 @@
 
     <form th:action="@{/denuncia/salvar}" method="post" th:object="${denuncia}" enctype="multipart/form-data">
 
-        <!-- Foto/Evidência -->
+        <!-- Foto/Evidência - Até 3 fotos -->
         <div class="section">
-            <div class="section-title">Evidência (opcional)</div>
-            <label class="info-label">Adicionar foto ou documento:</label>
-            <div class="photo-upload-wrapper">
-                <div class="photo-upload" id="photoUpload">
-                    <i class="bi bi-camera"></i>
-                    <span>Adicionar foto</span>
-                    <input type="file" id="photoInput" name="foto" accept="image/*" onchange="previewPhoto(event)">
+            <div class="section-title">Evidências (opcional)</div>
+            <label class="info-label">Adicionar até 3 fotos ou documentos:</label>
+
+            <div class="photo-upload-container">
+                <!-- Foto 1 -->
+                <div class="photo-upload-wrapper">
+                    <div class="photo-upload" id="photoUpload1">
+                        <i class="bi bi-camera"></i>
+                        <span>Foto 1</span>
+                        <input type="file" id="photoInput1" name="foto1" accept="image/*" onchange="previewPhoto(event, 1)">
+                    </div>
+                    <img id="photoPreview1" class="photo-preview" alt="Preview 1">
+                    <button type="button" class="remove-photo" id="removeBtn1" onclick="removePhoto(1)">
+                        <i class="bi bi-x"></i>
+                    </button>
                 </div>
-                <img id="photoPreview" class="photo-preview" alt="Preview">
+
+                <!-- Foto 2 -->
+                <div class="photo-upload-wrapper">
+                    <div class="photo-upload" id="photoUpload2">
+                        <i class="bi bi-camera"></i>
+                        <span>Foto 2</span>
+                        <input type="file" id="photoInput2" name="foto2" accept="image/*" onchange="previewPhoto(event, 2)">
+                    </div>
+                    <img id="photoPreview2" class="photo-preview" alt="Preview 2">
+                    <button type="button" class="remove-photo" id="removeBtn2" onclick="removePhoto(2)">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+
+                <!-- Foto 3 -->
+                <div class="photo-upload-wrapper">
+                    <div class="photo-upload" id="photoUpload3">
+                        <i class="bi bi-camera"></i>
+                        <span>Foto 3</span>
+                        <input type="file" id="photoInput3" name="foto3" accept="image/*" onchange="previewPhoto(event, 3)">
+                    </div>
+                    <img id="photoPreview3" class="photo-preview" alt="Preview 3">
+                    <button type="button" class="remove-photo" id="removeBtn3" onclick="removePhoto(3)">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
             </div>
+            <div class="photo-count" id="photoCount">0 foto(s) adicionada(s)</div>
         </div>
 
         <!-- Relato -->
@@ -355,20 +426,55 @@
 </div>
 
 <script>
+    let photoCount = 0;
+
     // Preview da foto
-    function previewPhoto(event) {
+    function previewPhoto(event, index) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const preview = document.getElementById('photoPreview');
-                const upload = document.getElementById('photoUpload');
+                const preview = document.getElementById(`photoPreview${index}`);
+                const upload = document.getElementById(`photoUpload${index}`);
+                const removeBtn = document.getElementById(`removeBtn${index}`);
+
                 preview.src = e.target.result;
                 preview.style.display = 'block';
                 upload.style.display = 'none';
+                removeBtn.style.display = 'flex';
+
+                updatePhotoCount();
             }
             reader.readAsDataURL(file);
         }
+    }
+
+    // Remover foto
+    function removePhoto(index) {
+        const preview = document.getElementById(`photoPreview${index}`);
+        const upload = document.getElementById(`photoUpload${index}`);
+        const input = document.getElementById(`photoInput${index}`);
+        const removeBtn = document.getElementById(`removeBtn${index}`);
+
+        preview.style.display = 'none';
+        preview.src = '';
+        upload.style.display = 'flex';
+        removeBtn.style.display = 'none';
+        input.value = '';
+
+        updatePhotoCount();
+    }
+
+    // Atualizar contador de fotos
+    function updatePhotoCount() {
+        let count = 0;
+        for (let i = 1; i <= 3; i++) {
+            if (document.getElementById(`photoInput${i}`).files.length > 0) {
+                count++;
+            }
+        }
+        photoCount = count;
+        document.getElementById('photoCount').textContent = `${count} foto(s) adicionada(s)`;
     }
 
     // Máscara de CEP

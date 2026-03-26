@@ -31,7 +31,8 @@ public class SecurityConfig {
                                 "/usuarios/cadastro",
                                 "/usuarios/salvar",
                                 "/css/**",
-                                "/js/**"
+                                "/js/**",
+                                "/images/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -39,6 +40,7 @@ public class SecurityConfig {
                         .loginPage("/usuarios/login")
                         .loginProcessingUrl("/usuarios/login")
                         .defaultSuccessUrl("/usuarios/home", true)
+                        .failureUrl("/usuarios/login?erro=true")
                         .permitAll()
                 )
                 .logout(logout -> logout

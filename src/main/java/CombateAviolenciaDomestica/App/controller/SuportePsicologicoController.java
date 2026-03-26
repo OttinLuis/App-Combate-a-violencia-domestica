@@ -19,6 +19,6 @@ public class SuportePsicologicoController {
     public String mostrarPaginaSuporte(Model model) {
         List<SuportePsicologico> suportes = suportePsicologicoRepository.findAll();
         model.addAttribute("suportes", suportes);
-        return "suporte-psicologico";
+        return "suporte/suporte-psicologico";
     }
 }

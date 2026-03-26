@@ -1,7 +1,8 @@
 package CombateAviolenciaDomestica.App.controller;
 
 import CombateAviolenciaDomestica.App.models.DenunciarCaso;
-import CombateAviolenciaDomestica.App.repository.DenunciarCasoRepository;
+import CombateAviolenciaDomestica.App.repository.DenunciaRepository;
+import CombateAviolenciaDomestica.App.repository.DenunciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,13 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class DenunciarCasoController {
 
     @Autowired
-    private DenunciarCasoRepository denunciarCasoRepository;
+    private DenunciaRepository denunciarCasoRepository;
 
     // Página do formulário
     @GetMapping("/denunciar")
     public String mostrarFormulario(Model model) {
         model.addAttribute("denuncia", new DenunciarCaso());
-        return "denuncia"; // denuncia.html
+        return "denuncia/denuncia";
     }
 
     // Salva no banco
@@ -31,6 +32,6 @@ public class DenunciarCasoController {
     // Página de sucesso
     @GetMapping("/denuncia/sucesso")
     public String sucesso() {
-        return "denunciar-sucesso"; // denunciar-sucesso.html
+        return "denuncia/denunciar-sucesso"; // denunciar-sucesso.html
     }
 }

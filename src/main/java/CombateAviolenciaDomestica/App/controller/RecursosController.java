@@ -8,6 +8,6 @@ public class RecursosController {
 
     @GetMapping("/recursos")
     public String recursos() {
-        return "recursos";
+        return "recursos/recursos";
     }
 }
