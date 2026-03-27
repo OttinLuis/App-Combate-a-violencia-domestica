@@ -46,4 +46,8 @@ public class UsuarioController {
         model.addAttribute("usuarios", usuarioRepository.findAll());
         return "home/home";
     }
+    @GetMapping("/chat")
+    public String abrirChat() {
+        return "chat/chat";
+    }
 }

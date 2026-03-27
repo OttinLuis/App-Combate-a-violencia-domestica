@@ -217,6 +217,7 @@
         .card:nth-child(3) { animation-delay: 0.6s; }
         .card:nth-child(4) { animation-delay: 0.7s; }
         .card:nth-child(5) { animation-delay: 0.8s; }
+        .card:nth-child(6) { animation-delay: 0.9s; }
 
         @keyframes fadeInUp {
             from {
@@ -315,6 +316,30 @@
             --card-bg: linear-gradient(135deg, #ece8f8 0%, #dcd3f7 100%);
         }
 
+        .chat-flutuante {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #6C5AAE, #5D4E8E);
+            color: white;
+            font-size: 26px;
+            text-decoration: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 22px rgba(93, 78, 142, 0.28);
+            transition: 0.3s ease;
+            z-index: 999;
+        }
+
+        .chat-flutuante:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 28px rgba(93, 78, 142, 0.35);
+        }
+
         footer {
             text-align: center;
             margin-top: 60px;
@@ -373,6 +398,14 @@
 
             .card-icon i {
                 font-size: 30px;
+            }
+
+            .chat-flutuante {
+                width: 58px;
+                height: 58px;
+                right: 18px;
+                bottom: 18px;
+                font-size: 22px;
             }
         }
 
@@ -456,12 +489,24 @@
             <h3>Painel Administrativo</h3>
             <p>Acompanhe usuários, denúncias e dados gerais do sistema</p>
         </a>
+
+        <a th:href="@{/usuarios/chat}" class="card dark">
+            <div class="card-icon">
+                <i class="bi bi-chat-dots-fill"></i>
+            </div>
+            <h3>Assistente Virtual</h3>
+            <p>Converse e receba orientação para denúncias e suporte</p>
+        </a>
     </section>
 
     <footer>
         <span class="icon"></span> <span>Lembre-se:</span> você merece viver em paz e segurança.
     </footer>
 </div>
+
+<a th:href="@{/usuarios/chat}" class="chat-flutuante" title="Falar com assistente">
+    <i class="bi bi-chat-dots-fill"></i>
+</a>
 
 </body>
 </html>
