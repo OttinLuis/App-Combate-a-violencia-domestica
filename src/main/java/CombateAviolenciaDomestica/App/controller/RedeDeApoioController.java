@@ -1,6 +1,5 @@
 package CombateAviolenciaDomestica.App.controller;
 
-import CombateAviolenciaDomestica.App.models.RedeDeApoio;
 import CombateAviolenciaDomestica.App.repository.RedeDeApoioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
