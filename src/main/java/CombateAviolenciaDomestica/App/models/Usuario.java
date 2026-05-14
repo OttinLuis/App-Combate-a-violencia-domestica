@@ -2,6 +2,8 @@ package CombateAviolenciaDomestica.App.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -51,6 +53,15 @@ public class Usuario {
     private String contatoConfianca;
 
     private String observacoes;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<DenunciarCaso> denunciarCasos;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<RedeDeApoio> redeDeApoios;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<SuportePsicologico> suportePsicologicos;
 
     public Usuario() {}
 

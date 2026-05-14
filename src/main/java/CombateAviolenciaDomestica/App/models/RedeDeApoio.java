@@ -2,6 +2,8 @@ package CombateAviolenciaDomestica.App.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "rede_de_apoio")
 public class RedeDeApoio {
@@ -19,6 +21,13 @@ public class RedeDeApoio {
 
     @Column(nullable = false)
     private String rua;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    @OneToMany(mappedBy = "rede_de_apoio")
+    private List<SuportePsicologico> suportePsicologicos;
 
 
     public RedeDeApoio() {

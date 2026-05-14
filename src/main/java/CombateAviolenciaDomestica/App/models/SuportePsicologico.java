@@ -28,6 +28,14 @@ public class SuportePsicologico {
     @Column(name = "contato_ong", length = 15)
     private String contatoOng;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "rede_de_apoio_id")
+    private RedeDeApoio rede_de_apoio;
+
     public String getNomePsicologa() {
         return nomePsicologa;
     }

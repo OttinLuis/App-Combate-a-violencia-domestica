@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "denunciar_caso")
@@ -34,6 +37,10 @@ public class DenunciarCaso {
     private String estado;
 
     private String municipio;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
     public DenunciarCaso() {}
 
